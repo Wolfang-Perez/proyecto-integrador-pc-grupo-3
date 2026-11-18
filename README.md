@@ -1,8 +1,10 @@
-[README-entregable-1.md](https://github.com/user-attachments/files/35052849/README-entregable-1.md)
+[README-entregable-2.md](https://github.com/user-attachments/files/35056442/README-entregable-2.md)
+
+
 # Proyecto integrador — Grupo 3: Entregas de última milla en el Valle de Aburrá (2025)
 
-> **Este archivo es el `README.md` del repositorio.** Se pega tal cual en GitHub
-> (reemplazando el README que crea GitHub al abrir el repositorio).
+> **Este archivo es el `README.md` final del repositorio** (Entregable 1 + Entregable 2).
+> Se pega tal cual en GitHub, reemplazando el README del Entregable 1.
 > Antes de pegarlo, reemplaza los dos nombres de los integrantes por los reales.
 
 ## Integrantes
@@ -11,7 +13,7 @@
 - **Juan Blanco** — usuario de GitHub: `JuanBlanco19`
 
 **Curso:** Programación científica
-**Entregable 1:** análisis y limpieza con pandas (15 %)
+**Entregable 2:** visualización con Matplotlib y Seaborn, y exposición (20 %)
 **Notebook:** [`notebooks/analisis.ipynb`](notebooks/analisis.ipynb)
 
 ## El conjunto de datos
@@ -70,10 +72,10 @@ reforzar la operación para reducir retrasos y mejorar la calificación del clie
 
 ### Faltantes: dos tipos que no se tratan igual
 
-| Tipo de faltante | Columnas | % | Decisión |
-|---|---|---|---|
-| **"No aplica"** (el vacío tiene significado) | `motivo_no_entrega` 92,49 % · `propina_cop` 77,39 % · `calificacion_cliente` 27,02 % · `tiempo_real_min` 5,10 % · `retraso_min` 5,10 % | — | **No se imputan** |
-| **Reales** (el dato se perdió) | `peso_kg` 6,02 % · `canal_compra` 5,44 % · `distancia_km` 2,73 % | — | Se imputan con criterio |
+| Tipo de faltante | Columnas | Decisión |
+|---|---|---|
+| **"No aplica"** (el vacío tiene significado) | `motivo_no_entrega` 92,49 % · `propina_cop` 77,39 % · `calificacion_cliente` 27,02 % · `tiempo_real_min` 5,10 % · `retraso_min` 5,10 % | **No se imputan** |
+| **Reales** (el dato se perdió) | `peso_kg` 6,02 % · `canal_compra` 5,44 % · `distancia_km` 2,73 % | Se imputan con criterio |
 
 Los vacíos de `motivo_no_entrega` coinciden **exactamente** con los 3.792 pedidos
 entregados (1.791 "A tiempo" + 2.001 "Con retraso"): no es un dato perdido, es
@@ -91,8 +93,8 @@ son los 209 pedidos `Fallido`.
 | `municipio_destino` | Sin problemas | 0 % | Conservar | Define la distancia y el costo. |
 | `canal_compra` | Faltantes reales | 5,44 % (223) | Imputar con la **moda** ("App", 1.746) | Es categórica: la moda es el valor más frecuente y no inventa un número. |
 | `categoria_producto` | Sin problemas | 0 % | Conservar | Es el grupo para imputar el peso. |
-| `peso_kg` | 247 faltantes + 3 centinelas (`999` y `350` kg) | 6,10 % (250) | Centinelas → `NaN`; imputar con la **mediana por `categoria_producto`** | El peso depende de la categoría (mediana 0,77 kg en Farmacia vs 9,20 kg en Hogar; general 3,16 kg). 350 kg en una moto y 999 kg son imposibles. |
-| `distancia_km` | 112 faltantes + 3 imposibles (`0`, `250`, `480` km) | 2,80 % (115) | Imposibles → `NaN`; imputar con la **mediana por `municipio_destino`** | La distancia depende del municipio (6,0 km en Medellín vs 36,85 km en Barbosa; general 8,7 km). El Valle de Aburrá mide ~70 km: 250 y 480 km son imposibles, y 0 km también. |
+| `peso_kg` | 247 faltantes + 3 centinelas (`999` y `350` kg) | 6,10 % (250) | Centinelas → `NaN`; mediana **por `categoria_producto`** | El peso depende de la categoría (mediana 0,77 kg en Farmacia vs 9,20 kg en Hogar; general 3,16 kg). 350 kg en una moto y 999 kg son imposibles. |
+| `distancia_km` | 112 faltantes + 3 imposibles (`0`, `250`, `480` km) | 2,80 % (115) | Imposibles → `NaN`; mediana **por `municipio_destino`** | La distancia depende del municipio (6,0 km en Medellín vs 36,85 km en Barbosa; general 8,7 km). El Valle de Aburrá mide ~70 km. |
 | `tipo_vehiculo` | Sin problemas | 0 % | Conservar | Explica el efecto de la lluvia. |
 | `operador` | Desbalance (A 1.299 vs D 667) | — | Conservar y reportar `count` | El desbalance se controla mostrando cuántos casos hay en cada promedio. |
 | `paradas_en_ruta` | Sin problemas | 0 % | Conservar | Aporta al tiempo real. |
@@ -101,10 +103,10 @@ son los 209 pedidos `Fallido`.
 | `tiempo_real_min` | 209 vacíos = pedidos fallidos | 5,10 % | **No imputar** | "No aplica": si la entrega falló, no hubo tiempo real. Imputar inventaría un dato. |
 | `retraso_min` | 209 vacíos = pedidos fallidos | 5,10 % | **No imputar** | Igual que el anterior: sin tiempo real no hay retraso. |
 | `estado_entrega` | Sin problemas | 0 % | Conservar | Es la variable de resultado del negocio. |
-| `motivo_no_entrega` | 92,49 % de vacíos | 92,49 % | **No eliminar y no imputar** | Se justifica con datos: los 3.792 vacíos son exactamente las entregas exitosas, y entre las 308 no exitosas hay 7 motivos repartidos (`Cliente ausente` 102, `Dirección incorrecta` 49, `Zona de difícil acceso` 40, `Producto dañado` 35, `Pedido equivocado` 33, `Cliente rechazó` 31, `Vehículo averiado` 18). Es la única fuente que dice **por qué** falla una entrega. |
+| `motivo_no_entrega` | 92,49 % de vacíos | 92,49 % | **No eliminar y no imputar** | Los 3.792 vacíos son exactamente las entregas exitosas; entre las 308 no exitosas hay 7 motivos (`Cliente ausente` 102, `Dirección incorrecta` 49, `Zona de difícil acceso` 40, `Producto dañado` 35, `Pedido equivocado` 33, `Cliente rechazó` 31, `Vehículo averiado` 18). Es la única fuente que dice **por qué** falla una entrega. |
 | `costo_envio_cop` | Sin problemas | 0 % | Conservar | Es la variable de costo a explicar. |
 | `calificacion_cliente` | 1.108 vacíos = el cliente no calificó | 27,02 % | **No imputar** | "No aplica": imputar una nota inventaría opiniones. |
-| `propina_cop` | 3.173 vacíos = no dejó propina | 77,39 % | **No eliminar y no imputar** | Se justifica: el vacío significa "propina = 0", no un dato perdido; la columna entra en el mapa de calor de correlaciones. |
+| `propina_cop` | 3.173 vacíos = no dejó propina | 77,39 % | **No eliminar y no imputar** | El vacío significa "propina = 0", no un dato perdido; la columna entra en el mapa de calor de correlaciones. |
 
 ### Costo de las decisiones
 
@@ -120,8 +122,8 @@ son los 209 pedidos `Fallido`.
   justificación).
 - **Valores imputados:** 588 (14,3 % del dataset).
 - Se conservan los 243 pedidos `Fallido`/`Devuelto` que **sí** tienen
-  `calificacion_cliente`: se documenta como inconsistencia semántica (el cliente
-  calificó un intento fallido), pero no se borran porque son evidencia real.
+  `calificacion_cliente`: se documenta como inconsistencia semántica, pero no se
+  borran porque son evidencia real.
 
 ### Otras verificaciones
 
@@ -132,7 +134,7 @@ son los 209 pedidos `Fallido`.
 - **Coherencia del estado:** `A tiempo` nunca pasa de 15 min de retraso y
   `Con retraso` siempre pasa de 15 min (0 excepciones).
 - **Categorías escritas de varias formas:** 0 variantes por espacios o mayúsculas
-  en las diez columnas categóricas; no hubo nada que unificar.
+  en las diez columnas categóricas.
 
 ## Hallazgos
 
@@ -145,10 +147,10 @@ son los 209 pedidos `Fallido`.
 | C | 1.027 | 20,28 | 46,84 % | 6,82 % | 3,47 | 724 |
 | D | 667 | **34,18** | **61,32 %** | **11,09 %** | **2,79** | 503 |
 
-**El operador D es el peor en las cuatro dimensiones**: casi el doble de retraso
-que A (34,18 vs 18,35 min), el mayor porcentaje de pedidos con retraso (61,32 %) y
-de fallidos/devueltos (11,09 %), y la peor calificación (2,79 frente a ~3,5 de los
-otros tres). A es el mejor en tiempo y en calificación; B es el que menos falla.
+El operador **D es el peor en las cuatro dimensiones**: casi el doble de retraso que
+A (34,18 vs 18,35 min), el mayor porcentaje con retraso (61,32 %) y de
+fallidos/devueltos (11,09 %), y la peor calificación (2,79 frente a ~3,5). A es el
+mejor en tiempo y nota; B el que menos falla.
 
 ### 2. ¿Cuánto aumenta el retraso cuando llueve? ¿Afecta igual a todos los vehículos?
 
@@ -158,16 +160,9 @@ otros tres). A es el mejor en tiempo y en calificación; B es el que menos falla
 | Sí | 1.621 | **39,78** | **76,87 %** |
 
 La lluvia **casi cuadruplica** el retraso (+28,85 min) y más que duplica el
-porcentaje de pedidos con retraso. Afecta a **todos** los vehículos:
-
-| Vehículo | Sin lluvia (min) | Con lluvia (min) | Aumento |
-|---|---|---|---|
-| Bicicleta eléctrica | 5,58 | 33,66 | +28,08 |
-| Moto | 10,34 | 39,05 | +28,71 |
-| Van | 16,14 | 45,65 | +29,51 |
-| Camión pequeño | 21,92 | 53,44 | +31,52 |
-
-No hay vehículo "inmune": el aumento es de ~28 a ~32 min en todos.
+porcentaje de pedidos con retraso. Afecta a **todos** los vehículos: bicicleta
+eléctrica +28,08 min, moto +28,71, van +29,51 y camión pequeño +31,52. No hay
+vehículo "inmune".
 
 ### 3. ¿Cómo cambia el volumen de pedidos y el retraso en Black Friday y diciembre?
 
@@ -178,17 +173,16 @@ No hay vehículo "inmune": el aumento es de ~28 a ~32 min en todos.
 | Diciembre | 1.315 | 23,40 | 49,81 % |
 
 El volumen crece mes a mes: **814** (sep) → **862** (oct) → **1.109** (nov) →
-**1.315** (dic), un +62 % de septiembre a diciembre; el día más cargado fue el
-**25 de noviembre, con 92 pedidos**. El retraso también sube: 23,40 min en
-diciembre frente a 21,31 min del resto. Black Friday tiene el peor retraso
-(36,10 min y 69,23 % con retraso), pero con solo 65 pedidos: la cifra es
-indicativa, no concluyente.
+**1.315** (dic), un +62 %; el día más cargado fue el **25 de noviembre, con 92
+pedidos**. El retraso también sube (23,40 min en diciembre vs 21,31). Black Friday
+tiene el peor retraso (36,10 min), pero con solo 65 pedidos: indicativo, no
+concluyente.
 
 ### 4. ¿Qué relación hay entre la distancia, el peso y el costo del envío?
 
-- Correlación **distancia ↔ costo: 0,83** (fuerte).
-- Correlación **peso ↔ costo: 0,48** (moderada).
-- Distancia y peso entre sí: ≈ 0 (son ejes independientes del precio).
+- **Distancia ↔ costo: r = 0,83** (fuerte).
+- **Peso ↔ costo: r = 0,48** (moderada).
+- Distancia y peso entre sí: ≈ 0 (ejes independientes del precio).
 - Costo de envío promedio: **14.026 COP**.
 
 | Rango de distancia (km) | Pedidos | Costo promedio (COP) |
@@ -199,8 +193,8 @@ indicativa, no concluyente.
 | 20 – 40 | 375 | 23.807 |
 | 40 – 100 | 55 | 39.389 |
 
-La **distancia manda en el costo** (r = 0,83): el costo se multiplica por ~4 entre
-el tramo más corto y el más largo. El peso influye, pero menos.
+La **distancia manda en el costo**: el costo se multiplica por ~4 entre el tramo
+más corto y el más largo. El peso influye, pero menos.
 
 ### 5. ¿El retraso explica la calificación del cliente?
 
@@ -220,22 +214,167 @@ el tramo más corto y el más largo. El peso influye, pero menos.
 | 30 a 60 | 697 | 2,91 |
 | > 60 | 292 | **1,71** |
 
-La correlación retraso ↔ calificación es **−0,76**: el retraso **sí explica** en
-buena medida la calificación, y el descenso es monótono tramo a tramo. Entre un
-pedido puntual (4,40) y uno con más de una hora de retraso (1,71) hay **2,7 puntos**
-de diferencia.
+**r = −0,76**: el retraso **sí explica** en buena medida la calificación, y el
+descenso es monótono tramo a tramo. Entre un pedido puntual (4,40) y uno con más de
+una hora de retraso (1,71) hay **2,7 puntos** de diferencia.
+
+## Visualizaciones
+
+Las **diez** gráficas están en [`visualizaciones/`](visualizaciones/) como PNG con
+nombre descriptivo, y también quedan ejecutadas dentro del notebook (se ven al
+abrirlo). Aquí van todas, en el orden en que se generan: cuatro univariadas y seis
+multivariadas.
+
+### Distribución del retraso
+
+![Histograma del retraso](visualizaciones/01-histograma-retraso-min.png)
+
+La distribución es **asimétrica a la derecha**: mediana de **17 min**, el 25 % de
+los pedidos llega en ≤ 4 min y el 75 % en ≤ 36 min, pero una cola larga llega a
+**239 min**. La mayoría cumple el compromiso; el problema se concentra en una
+minoría con retrasos muy altos.
+
+### Pedidos por estado de entrega
+
+![Pedidos por estado](visualizaciones/02-barras-estado-entrega.png)
+
+De los 4.100 pedidos, **2.001 (48,8 %) llegaron con retraso**, 1.791 (43,7 %) a
+tiempo, 209 (5,1 %) fallidos y 99 (2,4 %) devueltos. Casi la mitad de la operación
+incumple el compromiso de tiempo.
+
+### Pedidos por municipio
+
+![Pedidos por municipio](visualizaciones/03-barras-municipios.png)
+
+La demanda se concentra en **Medellín (1.750 pedidos, 42,7 %)**, seguido de Bello
+(553) y Envigado (408). La operación debe priorizarse en el corredor
+Medellín–Bello–Envigado–Itagüí.
+
+### Peso de los pedidos
+
+![Caja del peso](visualizaciones/04-caja-peso-kg.png)
+
+La mitad de los pedidos pesa entre **1,48 y 5,88 kg**, con mediana de **3,25 kg**.
+La caja es estrecha y la cola de valores altos llega a **48,4 kg**: son 42 pedidos de
+más de 20 kg, 40 de ellos del segmento **Hogar** (mediana 9,20 kg). El peso no
+depende de la distancia, pero sí del tipo de producto.
+
+### Retraso por operador
+
+![Retraso por operador](visualizaciones/05-cajas-retraso-operador.png)
+
+La caja del **operador D** está más alta y más dispersa que las de A, B y C, que se
+agrupan más abajo. Es la evidencia visual del hallazgo 1: D es el eslabón débil.
+
+### Retraso por vehículo y lluvia
+
+![Retraso por vehículo y lluvia](visualizaciones/06-cajas-vehiculo-lluvia.png)
+
+Para **todos** los vehículos la caja con lluvia ("Sí") sube respecto a la seca
+("No"). La bicicleta eléctrica pasa de ≈ 5,6 a ≈ 33,7 min de retraso promedio y la
+moto de ≈ 10,3 a ≈ 39,0. La lluvia es un factor transversal.
+
+### Distancia y costo de envío
+
+![Distancia y costo](visualizaciones/07-dispersion-distancia-costo.png)
+
+La nube es una **diagonal ascendente** (r = 0,83): a mayor distancia, mayor costo.
+De ≈ 9.390 COP en 0–5 km a ≈ 39.389 COP en 40–100 km. La distancia es la variable
+que debe sostener el precio del envío.
+
+### Pedidos por día
+
+![Pedidos por día](visualizaciones/08-linea-pedidos-dia.png)
+
+El volumen crece a lo largo del cuatrimestre (814 en septiembre → 1.315 en
+diciembre), con el **pico el 25 de noviembre (92 pedidos)**. La capacidad extra se
+necesita en noviembre y diciembre, no todo el año.
+
+### Calificación promedio por operador
+
+![Calificación por operador](visualizaciones/09-barras-calificacion-operador.png)
+
+Con las calificaciones válidas (2.992 de 4.100), A, B y C quedan casi empatados
+(**3,50 / 3,46 / 3,47**) y **D cae a 2,79**: medio punto por debajo. Es la misma
+conclusión del hallazgo 1, pero medida por la opinión del cliente y no por el reloj.
+
+### Mapa de calor de correlaciones
+
+![Mapa de calor de correlaciones](visualizaciones/10-heatmap-correlaciones.png)
+
+Las relaciones más fuertes: `retraso_min` ↔ `calificacion_cliente` **−0,76**;
+`distancia_km` ↔ `costo_envio_cop` **0,83**; `tiempo_real_min` ↔ `retraso_min`
+**0,81**; `peso_kg` ↔ `costo_envio_cop` **0,48**. Correlación no implica causa:
+solo muestra qué variables se mueven juntas.
+
+## Conclusiones y recomendaciones
+
+**Respuesta a cada pregunta:**
+
+1. **Operador:** D es el peor (34,18 min de retraso, 61,32 % con retraso, 11,09 %
+   fallidos/devueltos, 2,79 de calificación); A es el mejor en tiempo y nota; B es
+   el que menos falla.
+2. **Lluvia:** sube el retraso de 10,93 a 39,78 min y el % con retraso de 30,46 % a
+   76,87 %; afecta a todos los vehículos por igual (+28 a +32 min).
+3. **Temporada:** el volumen crece de 814 (sep) a 1.315 (dic) y el retraso sube;
+   Black Friday es el pico de retraso, pero con una muestra pequeña (65 pedidos).
+4. **Costo:** la distancia explica el costo (r = 0,83); el peso aporta algo
+   (r = 0,48); distancia y peso son independientes.
+5. **Satisfacción:** el retraso explica la calificación (r = −0,76): de 4,29 (a
+   tiempo) a 1,71 (> 60 min).
+
+**Recomendaciones:**
+
+1. **No renovar el contrato con el operador D** (o renegociarlo con un SLA
+   estricto y penalizaciones): es el peor en retraso, en fallos y en calificación,
+   y su calificación de 2,79 arrastra la percepción de la tienda.
+2. **Reforzar la capacidad en noviembre y diciembre**, en especial alrededor del
+   Black Friday y del 25 de noviembre: ahí se concentran el volumen (1.315 pedidos
+   en diciembre) y el retraso (23,40 min).
+3. **Plan de lluvia con holgura de tiempo**: cuando llueve el retraso sube +28,85
+   min y el 76,87 % de los pedidos se retrasa. Ajustar los tiempos prometidos o
+   sumar vehículos esos días evita prometer lo que no se puede cumplir.
+4. **Atacar las causas de no entrega**: `Cliente ausente` (102) y `Dirección
+   incorrecta` (49) son la mitad de los 308 fallos. Confirmar dirección y avisar al
+   cliente antes de despachar reduce fallos y devoluciones.
+5. **Usar la distancia como base del precio del envío** (r = 0,83): es la variable
+   que mejor explica el costo y la que permite cotizar con criterio.
+
+## Limitaciones
+
+- **Los datos son sintéticos.** Se generaron para el curso a partir de fenómenos
+  reales de Colombia: los lugares existen, las cifras no. Las conclusiones valen
+  para el dataset, no para la realidad.
+- **Faltantes no imputados.** El 27,02 % de los pedidos no tiene calificación y el
+  77,39 % no tiene propina. Se respetó que el vacío significa "no aplica", pero eso
+  deja los promedios de calificación calculados sobre una parte de los pedidos, con
+  posible **sesgo de autoselección** (quien califica no es una muestra aleatoria).
+- **Grupos pequeños.** Black Friday tiene 65 pedidos y el camión pequeño solo 44:
+  sus promedios son indicativos y no concluyentes.
+- **Correlación no implica causalidad.** Que el retraso y la calificación se muevan
+  juntos (r = −0,76) no prueba que el retraso sea la única causa; y la lluvia se
+  asocia al retraso, pero podrían existir otras variables (tráfico) que no están en
+  el dataset.
+- **La lluvia es solo "Sí/No"**, sin intensidad ni duración, así que no se puede
+  graduar su efecto.
+- **Un solo cuatrimestre.** No hay años anteriores: no se puede separar la
+  estacionalidad de una tendencia de largo plazo.
 
 ## Cómo ejecutar el notebook
 
-1. Abre el notebook `notebooks/analisis.ipynb` del repositorio (botón
-   **Open in Colab** del encabezado, o descárgalo y súbelo a
-   [colab.research.google.com](https://colab.research.google.com)).
-2. Sube el archivo `data/logistica_entregas_valle_aburra_2025.csv` al panel de
-   archivos de Colab (icono de carpeta → botón de subir). El notebook lo busca en
-   tres ubicaciones relativas, así que funciona si lo dejas en la raíz de Colab.
+1. Abre `notebooks/analisis.ipynb` (botón **Open in Colab** del encabezado, o
+   descárgalo y súbelo a [colab.research.google.com](https://colab.research.google.com)).
+2. Sube `data/logistica_entregas_valle_aburra_2025.csv` al panel de archivos de
+   Colab (icono de carpeta → subir). El notebook busca el archivo en tres rutas
+   relativas, así que funciona si lo dejas en la raíz de Colab.
 3. Menú **Entorno de ejecución → Ejecutar todas**. Debe correr de principio a fin
-   sin errores y sin necesidad de ejecutar celdas en desorden.
-4. Las celdas de texto explican qué hace cada sección y qué dicen los números.
+   sin errores.
+4. Las gráficas se guardan solas en `visualizaciones/` con `plt.savefig` (se
+   regeneran cada vez que corres la sección 6).
+5. Para descargarlas a tu computador, agrega una celda al final:
 
-> Si ejecutas el notebook desde tu computador, tenlo en la misma carpeta `data/`
-> del repositorio y usa un entorno con `pandas`, `numpy`, `matplotlib` y `seaborn`.
+```python
+from google.colab import files
+for nombre in sorted(os.listdir("visualizaciones")):
+    files.download(f"visualizaciones/{nombre}")
+```

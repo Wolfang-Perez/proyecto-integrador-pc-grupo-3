@@ -8,7 +8,7 @@
 ## Integrantes
 
 - **Wolfang Pérez** — usuario de GitHub: `Wolfang-Perez`
-- **[Nombre completo del integrante 2]** — usuario de GitHub: `[usuario2]`
+- **Juan Blanco** — usuario de GitHub: `JuanBlanco19`
 
 **Curso:** Programación científica
 **Entregable 1:** análisis y limpieza con pandas (15 %)

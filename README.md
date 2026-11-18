@@ -7,7 +7,7 @@
 
 ## Integrantes
 
-- **[Nombre completo del integrante 1]** — usuario de GitHub: `[usuario1]`
+- **Wolfang Pérez** — usuario de GitHub: `Wolfang-Perez`
 - **[Nombre completo del integrante 2]** — usuario de GitHub: `[usuario2]`
 
 **Curso:** Programación científica
